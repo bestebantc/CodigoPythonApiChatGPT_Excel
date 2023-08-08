@@ -1,0 +1,71 @@
+import random
+import csv
+import pandas as pd
+import openpyxl
+#Codigo para generar barrios y localidades
+localidades = [
+    "Usaquen",
+    "Chapinero",
+    "Santa Fe",
+    "San Cristobal",
+    "Usme",
+    "Tunjuelito",
+    "Bosa",
+    "Kennedy",
+    "Fontibon",
+    "Engativa",
+    "Suba",
+    "Barrios Unidos",
+    "Teusaquillo",
+    "Los Martires",
+    "Antonio Narino",
+    "Puente Aranda",
+    "La Candelaria",
+    "Rafael Uribe Uribe",
+    "Ciudad Bolivar"
+]
+
+barrios_por_localidad = {
+    "Usaquen": ["PASEO DE LOS LIBERTADORES", "VERBENAL", "LA URIBE", "SAN CRISTOBAL NORTE", "TOBERIN", "LOS CEDROS", "USAQUEN", "COUNTRY CLUB", "SANTA BARBARA"],
+    "Chapinero": ["EL REFUGIO", "SAN ISIDRO PATIOS", "PARDO RUBIO", "CHICO LAGO", "CHAPINERO"],
+    "Santa Fe": ["SAGRADO CORAZON", "LA MACARENA", "LAS NIEVES", "LAS CRUCES", "LOURDES"],
+    "San Cristobal": ["SAN BLAS","SOSIEGO","20 DE JULIO","LA GLORIA","LOS LIBERTADORES"],
+    "Usme":["LA FLORA","DANUBIO","GRAN YOMASA","COMUNEROS","ALFONSO LOPEZ","PARQUE ENTRENUBES","CIUDAD DE USME",],
+    "Tunjuelito":["VENECIA","EL CARMEN","ONTARIO","NUEVO MUZU","TUNAL","VILLA XIMENA","SAN VICENTE","SANTA LUCIA","SAN CARLOS","ABRAHAM LINCON",],
+    "Bosa":["APOGEO","BOSA OCCIDENTAL","BOSA CENTRAL","EL PORVENIR"],
+    "Kennedy":["AMERICAS","CARVAJAL","CASTILLA","TINTAL NORTE","CALANDAIMA","CORABASTOS","GRAN BRITALIA","PATIO BONITO","LAS MARGARITA","BAVARIA","TIMIZA"],
+    "Fontibon":["AEROPUERTO EL DORADO","CAPELLANIA","GRANJAS DE TECHO","CIUDAD SALITRE OCCIDENTE","ZONA FRANCA","FONTIBON SAN PABLO","FONTIBON"],
+    "Engativa":["ALAMOS","JARDIN BOTANICO","ENGATIVA","GARCES NAVAS","BOLIVIA","SANTA CECILIA","BOYACA REAL","MINUTO DE DIOS","LAS FERIAS"],
+    "Suba":["LA ACADEMIA","GUAYMARAL","SAN JOSE DE BAVARIA","BRITALIA","EL PRADO","LA ALHAMBRA","CASA BLANCA SUBA","SUBA","EL RINCON","NIZA","LA FLORESTA","TIBABUYES"],
+    "Barrios Unidos":["PARQUE SALITRE","LOS ALCAZARES","DOCE DE OCTUBRE"],
+    "Teusaquillo":["CIUDAD SALITRE ORIENTAL","QUINTA PAREDES","LA ESMERALDA","PARQUE SIMON BOLIVAR-CAN","TEUSAQUILLO","GALERIAS"],
+    "Los Martires":["SANTA ISABEL","LA SABANA"],
+    "Antonio Narino":["CIUDAD JARDIN","RESTREPO"],
+    "Puente Aranda":["CIUDAD MONTES","PUENTE ARANDA","ZONA INDUSTRIAL","SAN RAFAEL"],
+    "La Candelaria":["CANDELARIA","LAS AGUAS"],
+    "Rafael Uribe Uribe":["DIANA TURBAY","MARRUECOS","MARCO FIDEL SUAREZ","QUIROGA","SAN JOSE"],
+    "Ciudad Bolivar":["EL MOCHUELO","MONTEBLANCO","ARBORIZADORA","SAN FRANCISCO","LUCERO","EL TESORO","ISMAEL PERDOMO"]
+
+}
+
+tabla = ["Localidad"]
+
+for all in range(6451):  # Generar 602 filas
+    localidad = random.choice(localidades)
+    barrio = random.choice(barrios_por_localidad[localidad])
+    barrio2=random.choice(barrios_por_localidad[random.choice(localidades)])
+    tabla.append(barrio)
+
+for fila in tabla:
+    print(fila[0])
+try:
+	ruta_archivo = './BASE DE DATOS.xlsx'
+	libro_excel = openpyxl.load_workbook(ruta_archivo)
+	hoja = libro_excel["estudiantes"] 
+	for indice, valor in enumerate(tabla, start=1):
+		celda = hoja.cell(row=indice, column=6)  # Columna 'F' es la sexta columna (index 6)
+		celda.value = valor
+
+	libro_excel.save(ruta_archivo)
+except Exception as e:
+    print(e)
